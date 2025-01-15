@@ -1,6 +1,6 @@
 module.exports = {
   title: "ryanbae.dev",
-  description: "소통을 좋아하는 프론트엔드 개발자입니다.",
+  description: "일단 해보자",
   author: "Ryan",
   siteUrl: "https://ryanbae.dev",
   links: {

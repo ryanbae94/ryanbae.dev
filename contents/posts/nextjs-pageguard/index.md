@@ -7,7 +7,7 @@ tags:
   - Next.js
 ---
 
-# 1. 개요
+## 1. 개요
 
 프로젝트를 진행하면서, 로그인 상태에 따른 페이지 접근을 제한해야 하는 경우가 있습니다.
 제가 진행하고 있는 프로젝트는 다음과 같은 서비스 플로우를 가지고 있습니다.
@@ -17,9 +17,9 @@ tags:
 
 이 글에서는 Next.js 환경에서 어떻게 접근 제한을 구현하였는지에 대한 방법에 대해 공유하려고 합니다.
 
-# 2. 시행착오
+## 2. 시행착오
 
-## 2.1. CSR
+### 2.1. CSR
 
 인증정보를 zustand 의 persist 기능을 활용하여 로컬스토리지에 담고 있었습니다.
 `useEffect`훅을 사용하여 페이지 접근 시 로컬스토리지의 인증정보 유무를 확인하여 리다이렉트 하는 방법을 사용하였습니다.
@@ -54,9 +54,9 @@ export default function SignUp() {
 
 `useLayoutEffect` 훅과 같이 페이지가 페인트되기 전에 실행하는 기능을 사용해볼 수 있지만 이는 2번의 문제를 해결할 수 없고 [React 공식문서](https://react-ko.dev/reference/react/useLayoutEffect) 에서도 가급적 사용을 피하라고 명시되어 있기에 제외하였습니다.
 
-# 3. SSR
+## 3. SSR
 
-## 3.1. middleware
+### 3.1. middleware
 
 따라서 서버사이드렌더링 (SSR) 시점에서 로그인 상태를 판단하고 리다이렉트 처리를 해야 했습니다. SSR단계에서 로그인 상태를 확인하면 페이지를 받기 전에 처리가 완료되기 때문에 불필요한 페이지 호출이 발생하지 않습니다.
 
@@ -94,7 +94,7 @@ const token = request.cookies.get("accessToken")
 middleware는 로컬스토리지에 접근할 수 없습니다. middleware는 서버측에서 작동하는 코드인데, 로컬스토리지는 오직 브라우저(클라이언트) 측에서만 접근할 수 있는 [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)이기 때문입니다.
 따라서 인증 정보를 저장하는 방식을 로컬스토리지에서 cookie로 변경하였습니다.
 
-# 4. 전체 코드 및 수정 결과
+## 4. 전체 코드 및 수정 결과
 
 ```ts
 import { NextRequest, NextResponse } from "next/server"
@@ -134,9 +134,9 @@ export function middleware(request: NextRequest) {
 의도대로 잘 작동합니다.
 서버사이드에서의 페이지 로딩을 통해 리소스 낭비를 줄일 수 있었습니다.
 
-# 5. 기타
+## 5. 기타
 
-## 인증토큰 저장방식
+### 인증토큰 저장방식
 
 토큰을 저장하는 방식을 로컬스토리지에서 쿠키로 변경하였는데, 이 때 발생할 문제점은 없을까요?
 
